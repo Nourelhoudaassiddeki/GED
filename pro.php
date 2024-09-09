@@ -26,7 +26,7 @@
                 <a href="#">Stocks</a>
             </li>
             <li class="nav-item">
-                <a href="#">Mail</a>
+                <a href="http://localhost/project/mail/mail/sent.php" target="Fenêtre définie">Mail</a>
             </li>
         </ul>
     </div>

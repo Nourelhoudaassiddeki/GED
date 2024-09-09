@@ -1,28 +1,65 @@
 <?php
 include('doc.php');
+
+// Error message array to collect any validation errors
+$error_msg = [];
+
+// Check if form was submitted
 if (isset($_POST["submit"])) {
     $pseudo = $_POST["pseudo"];
     $fonction = $_POST["fonction"];
     $service = $_POST["services"];
     $password = $_POST["password"];
     $passwd = $_POST["passwd"];
-    $privileges = $_POST["privileges"];
-    $privilege = "";
-    foreach($privileges as $row){
-        $privilege .= $row . ",";
+    
+    // Validate form inputs
+    if (empty($pseudo)) {
+        $error_msg['pseudo'] = "Pseudo is required";
     }
-    $privilege = rtrim($privilege, ",");
+    if (empty($fonction)) {
+        $error_msg['fonction'] = "Fonction is required";
+    }
+    if (empty($service)) {
+        $error_msg['service'] = "Service is required";
+    }
+    if (empty($password)) {
+        $error_msg['password'] = "Password is required";
+    }
+    if (empty($passwd)) {
+        $error_msg['passwd'] = "Confirm password is required";
+    }
+    if ($password != $passwd) {
+        $error_msg['password_mismatch'] = "Passwords do not match";
+    }
 
-    $picture = $_FILES["picture"]["name"];
-    $extension = pathinfo($picture, PATHINFO_EXTENSION);
-    $folder = "uploads/" . $picture;
+    // Handle privileges selection
+    $privileges = isset($_POST["privileges"]) ? $_POST["privileges"] : [];
+    $privilege = implode(",", $privileges);
 
-    // Move uploaded file
-    if (move_uploaded_file($_FILES["picture"]["tmp_name"], $folder)) {
+    // Check if a picture was uploaded
+    if (isset($_FILES["picture"]["name"]) && !empty($_FILES["picture"]["name"])) {
+        $picture = $_FILES["picture"]["name"];
+        $extension = pathinfo($picture, PATHINFO_EXTENSION);
+        $folder = "uploads/" . $picture;
+
+        // Move the uploaded file to the target folder
+        if (move_uploaded_file($_FILES["picture"]["tmp_name"], $folder)) {
+            echo "File uploaded successfully to: " . $folder;
+        } else {
+            $error_msg['picture'] = "Failed to upload picture. Check folder permissions.";
+        }
+    } else {
+        $error_msg['picture'] = "Profile picture is required";
+    }
+
+    // If there are no validation errors, proceed with database insertion
+    if (empty($error_msg)) {
         // Prepare SQL statement
         $stmt = $conn->prepare("INSERT INTO nouna (PSEUDO, FONCTION, SECTION, MOT_DE_PASS, PASSWD, PRIVILEGE, pic) VALUES (?, ?, ?, ?, ?, ?, ?)");
+        
         if ($stmt) {
             $stmt->bind_param("sssssss", $pseudo, $fonction, $service, $password, $passwd, $privilege, $picture);
+            
             if ($stmt->execute()) {
                 echo "<script>alert('Data inserted successfully');</script>";
             } else {
@@ -31,26 +68,14 @@ if (isset($_POST["submit"])) {
             }
             $stmt->close();
         } else {
-            echo "Error: " . $conn->error;
+            echo "Error preparing SQL: " . $conn->error;
         }
-    } else {
-        echo "<script>alert('Failed to upload picture');</script>";
-    }
-
-    // Password validation
-    $error_msg = [];
-    if (empty($password)) {
-        $error_msg['password'] = "Password is required";
-    }
-    if (empty($passwd)) {
-        $error_msg['passwd'] = "Confirm password is required";
-    }
-    if ($password != $passwd) {
-        $error_msg['pass3'] = "Passwords don't match";
     }
 }
 
-$result = mysqli_query($conn, "SELECT * from nouna");
+// Fetch the data for display
+$result = mysqli_query($conn, "SELECT * FROM nouna");
+
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -65,11 +90,9 @@ $result = mysqli_query($conn, "SELECT * from nouna");
     <div class="form_validation">
         <div class="error_msg">
             <?php
-            if (isset($error_msg['passwd'])) {
-                echo $error_msg['passwd'];
-            }
-            if (isset($error_msg['pass3'])) {
-                echo $error_msg['pass3'];
+            // Display validation errors
+            foreach ($error_msg as $error) {
+                echo "<p style='color: red;'>$error</p>";
             }
             ?>
         </div>
@@ -130,7 +153,7 @@ $result = mysqli_query($conn, "SELECT * from nouna");
                                 <td><?php echo htmlspecialchars($row['FONCTION']); ?></td>
                                 <td><?php echo htmlspecialchars($row['SECTION']); ?></td>
                                 <td><?php echo htmlspecialchars($row['PRIVILEGE']); ?></td>
-                                <td><img src= '".$row[pic]."' height='100px' width='100px' alt=''></td>
+                                <td><img src="uploads/<?php echo htmlspecialchars($row['pic']); ?>" height="100px" width="100px" alt="User Profile Picture"></td>
                                 <td><a href="#" class="btn btn-primary">Edit</a></td>
                                 <td><a href="#" class="btn btn-danger">Delete</a></td>
                             </tr>
@@ -145,4 +168,3 @@ $result = mysqli_query($conn, "SELECT * from nouna");
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-GLhlTQ8tTAR9uOe4B3zMoj5DDs5bF7RTI5KTkW4rbhO5gppylUuF5yLck2zPvcIb" crossorigin="anonymous"></script>
 </body>
 </html>
-

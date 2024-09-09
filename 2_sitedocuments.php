@@ -26,143 +26,191 @@ if (isset($_POST["Submit"])) {
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
-    <title>Document</title>
-    <meta charset="utf-8" />
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
-<meta name="viewport" content="width=device-width" />
-<!-- *Note: You must have internet connection on your laptop or pc other wise below code is not working -->
-<!-- Add icon library -->
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
-<!-- bootstrap css and js -->
-<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css"/>
-<!-- JS for jQuery -->
-<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
-<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
-  </head>
-<body>
-<div >
-    <h2>Upload Documents</h2>
-    <form action="" method="post" >
-    <table class="table" style="  font-size: 14px;
-  padding: 10px;
-  table-layout: auto;
-  border-collapse: collapse;">
-  <thead class="thead-dark">
-    <tr>
-      <th scope="col">Titre</th>
-      <th scope="col">Pilote</th>
-      <th scope="col">Code</th>
-      <th scope="col">Support du document</th>
-      <th scope="col">Fournisseur</th>
-      <th scope="col">Destinataires</th>
-      <th scope="col">Lieu du classement</th>
-    </tr>
-  </thead>
-  <tbody>
-    <tr>
-      <td>
-        <input type="text" placeholder="le titre du document" value="" name="titre">
-      </td>
-      <td>
-        <input type="text" placeholder="Pilote:gere le doc" name="pilote">
-      </td>
-      <td>
-        <input type="text" placeholder="Exemple:ESU.PS08" name="code">
-      </td>
-      <td >
-        <input type="radio" name="support[]">papier <br>
-        <input type="radio" name="support[]">Numerique
-      </td>
-      <td>
-        <input type="text" placeholder="Exemple:Chef de servive technique" name="fournisseur">
-      </td>
-      <td>
-        <input type="radio" name="destinataire[]" >Service technique navigation
-        <br>
-        <input type="checkbox" name="destinataire[]" > section CNS
-        <br>
-        <input type="checkbox" name="destinataire[]" >section infrastructure& electricite
-        <br>
-        <input type="radio" name="destinataire" >section navigation <br>
-        <input type="checkbox" name="destinataire[]" > section Controle aerien 
-        <br>
-        <input type="checkbox" name="destinataire[]" >section SLIA
-        <br>
-        <input type="radio" name="destinataire[]" >section SSQE <br>
-        <input type="radio" name="destinataire[]" >section exploitation aeroportuaire
-        <br>
-        <input type="radio" name="destinataire[]" >section ressources <br>
-        <input type="radio" name="destinataire[]" >Autre <br>
-      </td>
-      <td>
-        <input type="text" placeholder="Lieu du classement" name="lieu">
-      </td>
-    </tr>
-  </tbody>
-</table>
-<h3>File input</h3>
-<input type="file" style="margin-top: 10px; margin-bottom: 10px;" required accept="image/png, image/jpge" >
-<button type="submit" style="margin-top: 10px; margin-bottom: 4px; "name="Submit">add document</button>
-</form>
-</div>
-<form method="post">
-      <div>
-        <input type="text" name="search" placeholder="search data" required />
-        <button type="submit" name="submit">Search</button>
-      </div>
-    </form>
-    <hr>
-<div class="container">
-	<div class="row">
-		<div class="col-lg-12" style="align= center" >
-			<br>
-			<h2 style="align= center">Document</h2>
-			<br>
-			<table>
-    <tr>
-        <td colspan="8" class="header-content">
-            <img src="onda logo.jpeg" alt="Logo">
-            <div>Office National des Aéroports</div>
-            <div>Aéroport Essaouira Mogador</div>
-        </td>
-    </tr>
-    <tr>
-        <th>Titre</th>
-        <th>Pilote</th>
-        <th>Code</th>
-        <th>Support du document</th>
-        <th>Mise à jour</th>
-        <th>Fournisseur</th>
-        <th>Destinataires</th>
-        <th>Lieu du classement</th>
-    </tr>
-			<tbody>
-      <style>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <title>Document Management Portal</title>
+    <style>
+        body {
+            padding: 20px;
+            font-family: 'Roboto', sans-serif;
+            background-color: #f1f5f9;
+        }
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+        .form-table {
+            font-size: 15px;
+            margin-bottom: 20px;
+            background-color: #ffffff;
+            border-radius: 8px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+        .form-table th, .form-table td {
+            border: 1px solid #dee2e6;
+            text-align: center;
+            padding: 12px;
+        }
+        .form-table th {
+            background-color: #007bff;
+            color: #ffffff;
+        }
+        .btn-submit {
+            margin-top: 10px;
+        }
+        .header-content {
+            text-align: center;
+            padding: 20px;
+            background-color: #ffffff;
+            border-radius: 8px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+        .header-content img {
+            max-height: 120px;
+            display: block;
+            margin: 0 auto;
+        }
+        .table-container {
+            margin-top: 20px;
+        }
         table {
             width: 100%;
             border-collapse: collapse;
-            margin-bottom: 20px; /* Espace entre les tableaux */
+            background-color: #ffffff;
+            border-radius: 8px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
         }
         th, td {
-            border: 1px solid black;
+            border: 1px solid #dee2e6;
             text-align: center;
-            padding: 8px;
+            padding: 12px;
         }
         th {
-            background-color: #f2f2f2;
+            background-color: #007bff;
+            color: #ffffff;
         }
-        .header-content {
-            text-align: center; /* Centre le contenu dans la cellule */
-            padding: 20px;
+        .btn {
+            font-size: 14px;
         }
-        .header-content img {
-            max-height: 100px;
-            display: block;
-            margin: 0 auto; /* Centre l'image elle-même */
+        .btn-primary, .btn-success, .btn-danger, .btn-warning {
+            margin: 5px;
+        }
+        .search-form {
+            margin-top: 20px;
+        }
+        .search-form input {
+            border-radius: 8px 0 0 8px;
+            border: 1px solid #dee2e6;
+        }
+        .search-form button {
+            border-radius: 0 8px 8px 0;
+        }
+        .document-table {
+            background-color: #ffffff;
+            border-radius: 8px;
+            overflow: hidden;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+        .document-table th, .document-table td {
+            border: none;
+            padding: 12px;
+            text-align: center;
+        }
+        .document-table th {
+            background-color: #007bff;
+            color: #ffffff;
+        }
+        .document-table tbody tr {
+            transition: background-color 0.3s ease;
+        }
+        .document-table tbody tr:hover {
+            background-color: #f1f5f9;
+        }
+        .document-table .btn {
+            font-size: 13px;
+            margin: 2px;
         }
     </style>
+</head>
+<body>
+    <div class="container">
+        <h2 class="mb-4 text-center">Document Upload Portal</h2>
+        <form action="" method="post">
+            <table class="form-table">
+                <thead>
+                    <tr>
+                    <th scope="col">Titre du Document</th>
+                        <th scope="col">Pilote du Document</th>
+                        <th scope="col">Code du Document</th>
+                        <th scope="col">Type de Document</th>
+                        <th scope="col">Fournisseur</th>
+                        <th scope="col">Destinataires</th>
+                        <th scope="col">Lieu de Classification</th>
+                    </tr>
+                </thead>
+                <tbody>
+                <tr>
+                        <td><input type="text" placeholder="Entrez le titre du document" name="titre" class="form-control"></td>
+                        <td><input type="text" placeholder="Entrez le pilote du document" name="pilote" class="form-control"></td>
+                        <td><input type="text" placeholder="e.g., ESU.PS08" name="code" class="form-control"></td>
+                        <td>
+                            <div>
+                                <input type="radio" name="support[]" value="papier"> Papier <br>
+                                <input type="radio" name="support[]" value="numerique"> Numérique
+                            </div>
+                        </td>
+                        <td><input type="text" placeholder="e.g., Responsable Technique" name="fournisseur" class="form-control"></td>
+                        <td>
+                            <div>
+                                <input type="radio" name="destinataire[]" value="service_technique_navigation"> Service Technique Navigation <br>
+                                <input type="checkbox" name="destinataire[]" value="section_CNS"> Section CNS <br>
+                                <input type="checkbox" name="destinataire[]" value="section_infrastructure_electricite"> Section Infrastructure & Électricité <br>
+                                <input type="radio" name="destinataire[]" value="section_navigation"> Section Navigation <br>
+                                <input type="checkbox" name="destinataire[]" value="section_controle_aerien"> Section Contrôle Aérien <br>
+                                <input type="checkbox" name="destinataire[]" value="section_SLIA"> Section SLIA <br>
+                                <input type="radio" name="destinataire[]" value="section_SSQE"> Section SSQE <br>
+                                <input type="radio" name="destinataire[]" value="section_exploitation_aeroportuaire"> Section Exploitation Aéroportuaire <br>
+                                <input type="radio" name="destinataire[]" value="section_ressources"> Section Ressources <br>
+                                <input type="radio" name="destinataire[]" value="autre"> Autre
+                            </div>
+                        </td>
+                        <td><input type="text" placeholder="Entrez le lieu de classification" name="lieu" class="form-control"></td>
+                    </tr>
+                </tbody>
+            </table>
+            <button type="submit" class="btn btn-primary btn-submit" name="Submit">Add Document</button>
+        </form>
+
+        <form method="post" class="search-form">
+            <div class="input-group">
+                <input type="text" name="search" placeholder="Search documents" class="form-control" required>
+                <button type="submit" name="submit" class="btn btn-primary">Search</button>
+            </div>
+        </form>
+
+        <hr>
+
+        <div class="table-container">
+            <div class="header-content">
+                <img src="onda logo.jpeg" alt="Logo">
+                <div>Office National des Aéroports</div>
+                <div>Aéroport Essaouira Mogador</div>
+            </div>
+            <h2 class="mt-4 mb-4 text-center">Document List</h2>
+            <table class="document-table">
+                <thead>
+                    <tr>
+                    <th>Titre du Document</th>
+                        <th>Pilote du Document</th>
+                        <th>Code du Document</th>
+                        <th>Type de Document</th>
+                        <th>Fournisseur</th>
+                        <th>Destinataires</th>
+                        <th>Lieu de Classification</th>
+                        <th>Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
 			<?php                
 			require '2_site.php'; 
 			$display_query = "SELECT titre, pilote, code, supportdocument, fournisseur, destinataire, lieu FROM docs";

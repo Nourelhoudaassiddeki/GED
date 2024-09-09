@@ -126,7 +126,7 @@
                             <table class="table" id="chat-table">
                                 <tbody>
                                 <?php
-                                $loginUserEmail = 'hadiniazi8009@gmail.com';
+                                $loginUserEmail = 'nourelhoudaassiddeki@gmail.com';
                                 $sql = "SELECT * from mails";
                                 $result = mysqli_query($conn, $sql);
                                 while($row = mysqli_fetch_array($result)){

@@ -13,7 +13,7 @@
             <a href="<?php echo 'inbox.php' ?>"><i class="fa fa-inbox"></i> Inbox (
 
             <?php
-            $loginUserEmail = 'hadiniazi8009@gmail.com';
+            $loginUserEmail = 'nourelhoudaassiddeki@gmail.com';
             $sql = "SELECT * from mails where mail_to = '$loginUserEmail' ";
             $result = mysqli_query($conn, $sql);
             $inboxCount = mysqli_num_rows($result);
@@ -25,7 +25,7 @@
             ><a href="<?php echo 'sent.php'  ?>"><i class="fa fa-mail-forward"></i> Sent ( 
 
             <?php
-            $loginUserEmail = 'hadiniazi8009@gmail.com';
+            $loginUserEmail = 'nourelhoudaassiddeki@gmail.com';
             $sql = "SELECT * from mails where mail_from = '$loginUserEmail' ";
             $result = mysqli_query($conn, $sql);
             $inboxCount = mysqli_num_rows($result);
